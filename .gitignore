@@ -1,0 +1,6 @@
+bin/
+obj/
+packages/
+.DS_Store
+.vs/
+TestResult.xml
