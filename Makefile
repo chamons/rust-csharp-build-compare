@@ -1,15 +1,26 @@
+Q=$(if $(V),,@)
+
+all:: rust xamarin netcore
+
 rust::
-	@echo Starting Build:
-	@time cargo build --manifest-path=rust/Cargo.toml -q
-	@echo Starting Tests:
-	@time cargo test --manifest-path=rust/Cargo.toml -q
+	$(Q) echo Starting Rust Build:
+	$(Q) time cargo build --manifest-path=rust/Cargo.toml -q
+	$(Q) echo Starting Tests:
+	$(Q) time cargo test --manifest-path=rust/Cargo.toml -q
 
 xamarin::
-	@echo Starting Build:
-	@time msbuild csharp-xamarin/csharp-xamarin.sln /v:q /nologo
-	@echo Starting Tests:
-	@time mono ./csharp-xamarin/packages/NUnit.ConsoleRunner.3.10.0/tools/nunit3-console.exe --noheader  csharp-xamarin/test/bin/Debug/test.dll
+	$(Q) echo Starting xamarin Build:
+	$(Q) time msbuild csharp-xamarin/csharp-xamarin.sln /v:q /nologo
+	$(Q) echo Starting Tests:
+	$(Q) time mono ./csharp-xamarin/packages/NUnit.ConsoleRunner.3.10.0/tools/nunit3-console.exe --noheader  csharp-xamarin/test/bin/Debug/test.dll
+
+netcore::
+	$(Q) echo Starting netcore Build:
+	$(Q) time dotnet build csharp-core/csharp-core.sln /v:q /nologo
+	$(Q) echo Starting Tests:
+	$(Q) time dotnet test csharp-core/test/test.csproj /v:q /nologo
 
 clean::
-	@cargo clean --manifest-path=rust/Cargo.toml -q
-	@msbuild /t:Clean csharp-xamarin/csharp-xamarin.sln 
+	$(Q) cargo clean --manifest-path=rust/Cargo.toml -q
+	$(Q) msbuild /t:Clean csharp-xamarin/csharp-xamarin.sln 
+	$(Q) dotnet clean csharp-core/csharp-core.sln /v:q /nologo
