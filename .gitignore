@@ -4,3 +4,4 @@ packages/
 .DS_Store
 .vs/
 TestResult.xml
+rust/target
